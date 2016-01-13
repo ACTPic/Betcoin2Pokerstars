@@ -24,3 +24,6 @@ Wanted_Charset="Betcoin.txt: "
 Wanted_Charset+="ASCII text, "
 Wanted_Charset+="with CRLF line terminators"
 test "$Charset" = "$Wanted_Charset"
+
+# Awk-Skript die Spieledaten zerlegen lassen
+./Betcoin_zerlegen.gawk Betcoin.txt
