@@ -11,7 +11,10 @@ while ($_ = <STDIN>) {
                 next;
         }
 
+        my ($Startzeile, $Zeitstempel) = undef;
+
         if (/^Game started at:/) {
+                $Startzeile = $_;
                 $_ =~ m|^Game.+at: (\d+)/(\d+)/(\d+) (\d+):(\d+):(\d+)|;
 
                 my $dt = DateTime->new(
@@ -22,6 +25,8 @@ while ($_ = <STDIN>) {
                         minute  => $5,
                         second  => $6,
                 );
-                print("Zeitstempel: @" . $dt->epoch . "\n");
+
+                $Zeitstempel = $dt->epoch;
+                print("Zeitstempel: @" . $Zeitstempel . "\n");
         }
 }
