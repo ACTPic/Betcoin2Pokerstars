@@ -38,7 +38,7 @@ while ($_ = <STDIN>) {
                 }
 
                 my $ID = $1;
-                print("ID: " . $ID);
+                print("ID: " . $ID . "\n");
         }
 
 }
