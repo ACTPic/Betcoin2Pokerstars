@@ -94,6 +94,17 @@ while ($_ = <STDIN>) {
                         print("Dealt to " . $Nick . " [" . $Erstekarte .
                               " " . $Karte ."]\n");
                 }
+        } elsif(/^Player .+ calls \(\d+\)$/) {
+                $_ =~ m|^Player (.+) calls \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "Call ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Call = $2;
+
+                print($Nick . ": calls " . $Call . "\n");
         } else {
                 print "»" . $_ . "\n";
         }
