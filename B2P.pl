@@ -91,6 +91,7 @@ while ($_ = <STDIN>) {
                 if(not defined $Erstekarte) {
                         $Erstekarte = $Karte;
                 } else {
+                        print("*** HOLE CARDS ***\n");
                         print("Dealt to " . $Nick . " [" . $Erstekarte .
                               " " . $Karte ."]\n");
                 }
