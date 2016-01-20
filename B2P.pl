@@ -6,6 +6,7 @@ use DateTime;
 
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
+my $ID;
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -28,7 +29,7 @@ while ($_ = <STDIN>) {
                         die "ID ohne Startzeile/Zeit eingelesen.";
                 }
 
-                my $ID = $1;
+                $ID = $1;
 
                 my $Small_Blind = "10";  #TODO
                 my $Big_Blind = "30";    #TODO
@@ -38,6 +39,20 @@ while ($_ = <STDIN>) {
                       ': Tournament #43' . $ID .
                       ', $3.14+$0.43 USD Hold\'em No Limit - Level IV (' .
                       "$Small_Blind/$Big_Blind) - $Datum" . "\n");
+        } elsif(/^Seat \d+:.+ \(\d+\)\.$/) {
+                $_ =~ m|^Seat (\d+): (.*) \((\d+)\)\.$|;
+
+                if(not $ID) {
+                        die "Sitz ohne ID.";
+                }
+
+                my $Sitz = $1;
+                my $Chips = $3;
+                my $Nick = $2;
+                $Nick =~ s/ /_/;
+
+                print("Seat " . $Sitz . ": " . $Nick .
+                      " (" . $Chips . " in chips)\n");
         } else {
                 print "»" . $_ . "\n";
         }
