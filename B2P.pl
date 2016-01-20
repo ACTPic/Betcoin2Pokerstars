@@ -53,6 +53,18 @@ while ($_ = <STDIN>) {
 
                 print("Seat " . $Sitz . ": " . $Nick .
                       " (" . $Chips . " in chips)\n");
+        } elsif(/^Player .+ ante \(\d+\)$/) {
+                $_ =~ m|^Player (.+) ante \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "Einsatz ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Einsatz = $2;
+                $Nick =~ s/ /_/;
+
+                print($Nick . ": posts the ante " . $Einsatz . "\n");
         } else {
                 print "»" . $_ . "\n";
         }
