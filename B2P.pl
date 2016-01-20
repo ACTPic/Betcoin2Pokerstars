@@ -6,8 +6,7 @@ use DateTime;
 
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
-my $ID;
-my $Erstekarte;
+my ($ID, $Erstekarte, $Small_Blind, $Big_Blind);
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -31,8 +30,8 @@ while ($_ = <STDIN>) {
                 }
 
                 $ID = $1;
-                my $Small_Blind = $2;
-                my $Big_Blind = $3;
+                $Small_Blind = $2;
+                $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
 
