@@ -87,7 +87,6 @@ while ($_ = <STDIN>) {
 
                 my $Nick = $1;
                 my $Karte = $2;
-                $Nick =~ s/ /_/;
 
                 if(not defined $Erstekarte) {
                         $Erstekarte = $Karte;
