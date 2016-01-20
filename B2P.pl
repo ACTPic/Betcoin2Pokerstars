@@ -23,16 +23,15 @@ while ($_ = <STDIN>) {
                         second  => $6,
                 );
         } elsif(/^Game ID: \d+/) {
-                $_ =~ m|^Game ID: (\d+)|;
+                $_ =~ m|^Game ID: (\d+) (\d+)/(\d+)|;
 
                 if(not $Startzeile or not $Zeit) {
                         die "ID ohne Startzeile/Zeit eingelesen.";
                 }
 
                 $ID = $1;
-
-                my $Small_Blind = "10";  #TODO
-                my $Big_Blind = "30";    #TODO
+                my $Small_Blind = $2;
+                my $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
 
                 print('PokerStars Hand #43' . $Zeit->second . $ID .
