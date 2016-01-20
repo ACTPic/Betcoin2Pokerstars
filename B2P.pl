@@ -48,7 +48,6 @@ while ($_ = <STDIN>) {
                 my $Sitz = $1;
                 my $Chips = $3;
                 my $Nick = $2;
-                $Nick =~ s/ /_/;
 
                 print("Seat " . $Sitz . ": " . $Nick .
                       " (" . $Chips . " in chips)\n");
@@ -61,7 +60,6 @@ while ($_ = <STDIN>) {
 
                 my $Nick = $1;
                 my $Einsatz = $2;
-                $Nick =~ s/ /_/;
 
                 print($Nick . ": posts the ante " . $Einsatz . "\n");
         } elsif(/^Player .+ has (small|big) blind \(\d+\)$/) {
@@ -74,7 +72,6 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
                 my $Blindtyp = $2;
                 my $Blind = $3;
-                $Nick =~ s/ /_/;
 
                 print($Nick . ": posts " . $Blindtyp . " " . $Blind . "\n");
         } else {
