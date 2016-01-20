@@ -7,6 +7,7 @@ use DateTime;
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
 my $ID;
+my $Erstekarte;
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -33,6 +34,7 @@ while ($_ = <STDIN>) {
                 my $Small_Blind = $2;
                 my $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
+                $Erstekarte = undef;
 
                 print('PokerStars Hand #43' . $Zeit->second . $ID .
                       ': Tournament #43' . $ID .
@@ -74,6 +76,25 @@ while ($_ = <STDIN>) {
                 my $Blind = $3;
 
                 print($Nick . ": posts " . $Blindtyp . " " . $Blind . "\n");
+        } elsif(/^Player .+ received a card.$/) {
+                #Ignorieren. Im Zielformat nicht drin.
+        } elsif(/^Player .+ received card: \[..\]$/) {
+                $_ =~ m|^Player (.+) received card: \[(..)\]$|;
+
+                if(not $ID) {
+                        die "Karte ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Karte = $2;
+                $Nick =~ s/ /_/;
+
+                if(not defined $Erstekarte) {
+                        $Erstekarte = $Karte;
+                } else {
+                        print("Dealt to " . $Nick . " [" . $Erstekarte .
+                              " " . $Karte ."]\n");
+                }
         } else {
                 print "»" . $_ . "\n";
         }
