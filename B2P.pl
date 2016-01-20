@@ -77,8 +77,8 @@ while ($_ = <STDIN>) {
                 print($Nick . ": posts " . $Blindtyp . " " . $Blind . "\n");
         } elsif(/^Player .+ received a card.$/) {
                 #Ignorieren. Im Zielformat nicht drin.
-        } elsif(/^Player .+ received card: \[..\]$/) {
-                $_ =~ m|^Player (.+) received card: \[(..)\]$|;
+        } elsif(/^Player .+ received card: \[.+\]$/) {
+                $_ =~ m|^Player (.+) received card: \[(.+)\]$|;
 
                 if(not $ID) {
                         die "Karte ohne ID.";
