@@ -64,6 +64,19 @@ while ($_ = <STDIN>) {
                 $Nick =~ s/ /_/;
 
                 print($Nick . ": posts the ante " . $Einsatz . "\n");
+        } elsif(/^Player .+ has (small|big) blind \(\d+\)$/) {
+                $_ =~ m|^Player (.+) has (.+) \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "Blind ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Blindtyp = $2;
+                my $Blind = $3;
+                $Nick =~ s/ /_/;
+
+                print($Nick . ": posts " . $Blindtyp . " " . $Blind . "\n");
         } else {
                 print "»" . $_ . "\n";
         }
