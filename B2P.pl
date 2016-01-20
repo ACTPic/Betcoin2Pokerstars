@@ -105,6 +105,17 @@ while ($_ = <STDIN>) {
                 my $Call = $2;
 
                 print($Nick . ": calls " . $Call . "\n");
+        } elsif(/^Player .+ (folds|checks)$/) {
+                $_ =~ m|^Player (.+) (folds\|checks)$|;
+
+                if(not $ID) {
+                        die "Fold/Check ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Aktion = $2;
+
+                print($Nick . ": " . $Aktion . "\n");
         } else {
                 print "»" . $_ . "\n";
         }
