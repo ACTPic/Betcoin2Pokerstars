@@ -6,7 +6,7 @@ use DateTime;
 
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
-my ($ID, $Erstekarte, $Small_Blind, $Big_Blind);
+my ($ID, $Hand, $Erstekarte, $Small_Blind, $Big_Blind);
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -22,23 +22,35 @@ while ($_ = <STDIN>) {
                         minute  => $5,
                         second  => $6,
                 );
+
+                $ID = $Zeit->epoch() if not defined $ID;
         } elsif(/^Game ID: \d+/) {
                 $_ =~ m|^Game ID: (\d+) (\d+)/(\d+)|;
 
                 if(not $Startzeile or not $Zeit) {
-                        die "ID ohne Startzeile/Zeit eingelesen.";
+                        die "Handnummer ohne Startzeile/Zeit eingelesen.";
                 }
 
-                $ID = $1;
+                $Hand = $1;
                 $Small_Blind = $2;
                 $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
 
-                print('PokerStars Hand #43' . $Zeit->second . $ID .
-                      ': Tournament #43' . $ID .
+                print('PokerStars Hand #43' . $Zeit->second . $Hand .
+                      ': Tournament #' . $ID .
                       ', $3.14+$0.43 USD Hold\'em No Limit - Level IV (' .
                       "$Small_Blind/$Big_Blind) - $Datum" . "\n");
+        } elsif(/^Seat \d+ is the button$/) {
+                $_ =~ m|^Seat (\d+) is the button$|;
+
+                if(not $ID) {
+                        die "Knopf ohne ID.";
+                }
+
+                my $Knopf = $1;
+
+                print("Table '" . $ID . " 1' 9-max Seat #" . $Knopf . " is the button\n");
         } elsif(/^Seat \d+:.+ \(\d+\)\.$/) {
                 $_ =~ m|^Seat (\d+): (.*) \((\d+)\)\.$|;
 
