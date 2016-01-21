@@ -190,6 +190,16 @@ while ($_ = <STDIN>) {
                 my $Pot = $1;
 
                 print("Total pot $Pot | Rake 0\n");
+        } elsif(/^Board: /) {
+                $_ =~ m|^Board: (.+)$|;
+
+                if(not $ID) {
+                        die "Brett ohne ID.";
+                }
+
+                my $Brett = $1;
+
+                print("Board $Brett\n");
         } else {
                 print "»" . $_ . "\n";
         }
