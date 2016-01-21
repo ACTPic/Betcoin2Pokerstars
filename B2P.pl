@@ -37,6 +37,7 @@ while ($_ = <STDIN>) {
                 $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
+                $Einsatz = $Big_Blind if not defined $Einsatz;
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -136,6 +137,18 @@ while ($_ = <STDIN>) {
                 $Einsatz = $2;
 
                 print($Nick . ": bets " . $Einsatz . "\n");
+        } elsif(/^Player .+ raises \(\d+\)$/) {
+                $_ =~ m|^Player (.+) raises \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "Raise ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Neuer_Einsatz = $2;
+
+                print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
+                $Einsatz = $Neuer_Einsatz;
         } elsif(/^Player .+ (folds|checks)$/) {
                 $_ =~ m|^Player (.+) (folds\|checks)$|;
 
@@ -147,6 +160,11 @@ while ($_ = <STDIN>) {
                 my $Aktion = $2;
 
                 print($Nick . ": " . $Aktion . "\n");
+        } elsif(/^Uncalled bet \(\d+\) returned to .+$/) {
+                if(not $ID) {
+                        die "Return ohne ID.";
+                }
+                print("$_\n");
         } else {
                 print "»" . $_ . "\n";
         }
