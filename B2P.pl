@@ -107,6 +107,12 @@ while ($_ = <STDIN>) {
                         print("Dealt to " . $Nick . " [" . $Erstekarte .
                               " " . $Karte ."]\n");
                 }
+        } elsif(/^\*\*\* (TURN|RIVER|FLOP) \*\*\*: \[.+\]$/) {
+                if(not $ID) {
+                        die "Turn/River/Flop ohne ID";
+                }
+
+                print("$_\n");
         } elsif(/^Player .+ calls \(\d+\)$/) {
                 $_ =~ m|^Player (.+) calls \((\d+)\)$|;
 
