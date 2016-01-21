@@ -50,7 +50,8 @@ while ($_ = <STDIN>) {
 
                 my $Knopf = $1;
 
-                print("Table '" . $ID . " 1' 9-max Seat #" . $Knopf . " is the button\n");
+                print("Table '" . $ID . " 1' 9-max Seat #" . $Knopf .
+                      " is the button\n");
         } elsif(/^Seat \d+:.+ \(\d+\)\.$/) {
                 $_ =~ m|^Seat (\d+): (.*) \((\d+)\)\.$|;
 
