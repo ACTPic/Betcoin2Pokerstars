@@ -6,7 +6,7 @@ use DateTime;
 
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
-my ($ID, $Hand, $Erstekarte, $Small_Blind);
+my ($ID, $Hand, $Erstekarte, $Small_Blind, $Big_Blind);
 my $Einsatz;
 
 while ($_ = <STDIN>) {
@@ -34,14 +34,14 @@ while ($_ = <STDIN>) {
 
                 $Hand = $1;
                 $Small_Blind = $2;
-                $Einsatz = $3;
+                $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
                       ', $3.14+$0.43 USD Hold\'em No Limit - Level IV (' .
-                      "$Small_Blind/$Einsatz) - $Datum" . "\n");
+                      "$Small_Blind/$Big_Blind) - $Datum" . "\n");
         } elsif(/^Seat \d+ is the button$/) {
                 $_ =~ m|^Seat (\d+) is the button$|;
 
