@@ -160,6 +160,16 @@ while ($_ = <STDIN>) {
                 my $Aktion = $2;
 
                 print($Nick . ": " . $Aktion . "\n");
+        } elsif(/^Player .+ mucks cards$/) {
+                $_ =~ m|^Player (.+) mucks cards$|;
+
+                if(not $ID) {
+                        die "Muck ohne ID.";
+                }
+
+                my $Nick = $1;
+
+                print($Nick . ": mucks hand\n");
         } elsif(/^Uncalled bet \(\d+\) returned to .+$/) {
                 if(not $ID) {
                         die "Return ohne ID.";
