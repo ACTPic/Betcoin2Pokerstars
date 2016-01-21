@@ -126,6 +126,17 @@ while ($_ = <STDIN>) {
                 $Einsatz = $2;
 
                 print($Nick . ": calls " . $Einsatz . "\n");
+        } elsif(/^Player .+ allin \(\d+\)$/) {
+                $_ =~ m|^Player (.+) allin \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "All-In ohne ID.";
+                }
+
+                my $Nick = $1;
+                $Einsatz = $2;
+
+                print($Nick . ": bets " . $Einsatz . " and is all-in\n");
         } elsif(/^Player .+ bets \(\d+\)$/) {
                 $_ =~ m|^Player (.+) bets \((\d+)\)$|;
 
@@ -134,8 +145,9 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
+                my $Neuer_Einsatz = $2;
 
-                print($Nick . ": bets " . $Einsatz . "\n");
+                print($Nick . ": bets " . $Neuer_Einsatz . "\n");
         } elsif(/^Player .+ raises \(\d+\)$/) {
                 $_ =~ m|^Player (.+) raises \((\d+)\)$|;
 
@@ -147,7 +159,6 @@ while ($_ = <STDIN>) {
                 my $Neuer_Einsatz = $2;
 
                 print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
-                #$Einsatz = $Neuer_Einsatz;
         } elsif(/^Player .+ (folds|checks)$/) {
                 $_ =~ m|^Player (.+) (folds\|checks)$|;
 
