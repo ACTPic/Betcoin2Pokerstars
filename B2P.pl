@@ -7,6 +7,7 @@ use DateTime;
 my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
 my ($ID, $Hand, $Erstekarte, $Small_Blind, $Big_Blind);
+my $Einsatz;
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -121,9 +122,9 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
-                my $Call = $2;
+                $Einsatz = $2;
 
-                print($Nick . ": calls " . $Call . "\n");
+                print($Nick . ": calls " . $Einsatz . "\n");
         } elsif(/^Player .+ (folds|checks)$/) {
                 $_ =~ m|^Player (.+) (folds\|checks)$|;
 
