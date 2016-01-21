@@ -69,13 +69,13 @@ while ($_ = <STDIN>) {
                 $_ =~ m|^Player (.+) ante \((\d+)\)$|;
 
                 if(not $ID) {
-                        die "Einsatz ohne ID.";
+                        die "Voreinsatz ohne ID.";
                 }
 
                 my $Nick = $1;
-                my $Einsatz = $2;
+                my $Voreinsatz = $2;
 
-                print($Nick . ": posts the ante " . $Einsatz . "\n");
+                print($Nick . ": posts the ante " . $Voreinsatz . "\n");
         } elsif(/^Player .+ has (small|big) blind \(\d+\)$/) {
                 $_ =~ m|^Player (.+) has (.+) \((\d+)\)$|;
 
