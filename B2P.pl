@@ -125,6 +125,17 @@ while ($_ = <STDIN>) {
                 $Einsatz = $2;
 
                 print($Nick . ": calls " . $Einsatz . "\n");
+        } elsif(/^Player .+ bets \(\d+\)$/) {
+                $_ =~ m|^Player (.+) bets \((\d+)\)$|;
+
+                if(not $ID) {
+                        die "Bet ohne ID.";
+                }
+
+                my $Nick = $1;
+                $Einsatz = $2;
+
+                print($Nick . ": bets " . $Einsatz . "\n");
         } elsif(/^Player .+ (folds|checks)$/) {
                 $_ =~ m|^Player (.+) (folds\|checks)$|;
 
