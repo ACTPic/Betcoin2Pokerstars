@@ -200,6 +200,10 @@ while ($_ = <STDIN>) {
                 my $Brett = $1;
 
                 print("Board $Brett\n");
+        } elsif(/^Game ended at:/) {
+                print("\n\n");
+        } elsif(/^$/) {
+                print("\n");
         } else {
                 print "»" . $_ . "\n";
         }
