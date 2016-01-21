@@ -134,7 +134,6 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
-                $Einsatz = $2;
 
                 print($Nick . ": bets " . $Einsatz . "\n");
         } elsif(/^Player .+ raises \(\d+\)$/) {
@@ -148,7 +147,7 @@ while ($_ = <STDIN>) {
                 my $Neuer_Einsatz = $2;
 
                 print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
-                $Einsatz = $Neuer_Einsatz;
+                #$Einsatz = $Neuer_Einsatz;
         } elsif(/^Player .+ (folds|checks)$/) {
                 $_ =~ m|^Player (.+) (folds\|checks)$|;
 
