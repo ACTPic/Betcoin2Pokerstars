@@ -174,7 +174,22 @@ while ($_ = <STDIN>) {
                 if(not $ID) {
                         die "Return ohne ID.";
                 }
-                print("$_\n");
+        } elsif(/^------ Summary ------$/) {
+                if(not $ID) {
+                        die "Zusammenfassung ohne ID";
+                }
+
+                print("*** SUMMARY ***\n");
+        } elsif(/^Pot: \d+$/) {
+                $_ =~ m|^Pot: (\d+)$|;
+
+                if(not $ID) {
+                        die "Pot ohne ID.";
+                }
+
+                my $Pot = $1;
+
+                print("Total pot $Pot | Rake 0\n");
         } else {
                 print "»" . $_ . "\n";
         }
