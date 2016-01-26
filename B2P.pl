@@ -8,6 +8,7 @@ my $Startzeile = undef;
 my $Zeit = DateTime->new(year => 2016);
 my ($ID, $Hand, $Erstekarte, $Small_Blind, $Big_Blind);
 my $Einsatz;
+my @Zusammenfassung = ();
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -38,6 +39,7 @@ while ($_ = <STDIN>) {
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
                 $Einsatz = $Big_Blind if not defined $Einsatz;
+                @Zusammenfassung = ();
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -189,7 +191,7 @@ while ($_ = <STDIN>) {
                         die "Zusammenfassung ohne ID";
                 }
 
-                print("*** SUMMARY ***\n");
+                push @Zusammenfassung, "*** SUMMARY ***\n";
         } elsif(/^Pot: \d+$/) {
                 $_ =~ m|^Pot: (\d+)$|;
 
@@ -199,7 +201,7 @@ while ($_ = <STDIN>) {
 
                 my $Pot = $1;
 
-                print("Total pot $Pot | Rake 0\n");
+                push @Zusammenfassung, "Total pot $Pot | Rake 0\n";
         } elsif(/^Board: /) {
                 $_ =~ m|^Board: (.+)$|;
 
@@ -209,8 +211,9 @@ while ($_ = <STDIN>) {
 
                 my $Brett = $1;
 
-                print("Board $Brett\n");
+                push @Zusammenfassung, "Board $Brett\n";
         } elsif(/^Game ended at:/) {
+                print(@Zusammenfassung);
                 print("\n\n");
         } elsif(/^$/) {
                 print("\n");
