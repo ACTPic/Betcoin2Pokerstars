@@ -12,6 +12,23 @@ my @Zusammenfassung = ();
 my @Showdown = ();
 my @Kollekte = ();
 
+sub Blatt_konvertieren {
+        my $Blatt = $1;
+
+        $Blatt =~ s/^High card (.+)$/high card $1/;
+        $Blatt =~ s/^One pair of (.+)$/a pair of $1/;
+        $Blatt =~ s/^Two pairs\. (.+)$/two pair, $1/;
+        $Blatt =~ s/^Three Of Kind of (.+)$/three of a kind, $1/;
+        $Blatt =~ s/^Four Of Kind of (.+)$/four of a kind, $1/;
+        $Blatt =~ s/^Straight to (.+)$/a straight, % to $1/;
+        $Blatt =~ s/^Flush, (.+) high$/a flush, $1 high/;
+        $Blatt =~ s|^Full[ ]House[ ]\((.+)/(.+)\)$
+                   |a full house, $1 full of $2|x;
+        #TODO: „Straight-Flush“
+
+        return $Blatt;
+}
+
 while ($_ = <STDIN>) {
         s/\r?\n//;
         if(/^Game started at:/) {
@@ -207,7 +224,11 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $5;
                 my $Umsatz = $6;
 
-                push(@Showdown, "$Nick: shows $Karten\n");
+                $Karten =~ /^(.+) (\[.+\])$/;
+                my $Blatt = Blatt_konvertieren($1);
+                my $Kuerzel = $2;
+
+                push(@Showdown, "$Nick: shows $Kuerzel ($Blatt)\n");
                 push(@Kollekte, "$Nick: collected $Einsammlung from pot\n");
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
