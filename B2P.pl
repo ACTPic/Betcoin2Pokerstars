@@ -248,6 +248,24 @@ while ($_ = <STDIN>) {
                 print "«$1: Einlage=$2 Einsammlung=$3 $4=$5\n";
 
                 #Keine direkte Ausgabe. Im Zielformat so nicht drin.
+        } elsif(/^.?Player .+ mucks/) {
+                my $Win = 0;
+                $Win = 1 if $_ =~ /^\*/;
+                $_ =~ m|^.?Player[ ](.+)[ ]mucks.*[ ]Bets:[ ](\d+)\.[ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)|;
+
+                if(not $ID) {
+                        die "Wegwerfen ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Einlage = $2;
+                my $Einsammlung = $3;
+                my $Ausgang = $4;
+                my $Umsatz = $5;
+
+                print "«$1: Einlage=$2 Einsammlung=$3 $4=$5\n";
+
+                #Keine direkte Ausgabe. Im Zielformat so nicht drin.
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
                         die "Zusammenfassung ohne ID";
