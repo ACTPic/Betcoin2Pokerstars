@@ -9,6 +9,8 @@ my $Zeit = DateTime->new(year => 2016);
 my ($ID, $Hand, $Erstekarte, $Small_Blind, $Big_Blind);
 my $Einsatz;
 my @Zusammenfassung = ();
+my @Showdown = ();
+my @Kollekte = ();
 
 while ($_ = <STDIN>) {
         s/\r?\n//;
@@ -39,7 +41,7 @@ while ($_ = <STDIN>) {
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
                 $Einsatz = $Big_Blind if not defined $Einsatz;
-                @Zusammenfassung = ();
+                @Zusammenfassung = @Showdown = @Kollekte = ();
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -186,6 +188,27 @@ while ($_ = <STDIN>) {
                 if(not $ID) {
                         die "Return ohne ID.";
                 }
+        } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]Bets:[ ]\d+\.[ ]
+                Collects:[ ]\d+\.[ ].+:[ ]\d+\.$/x)
+        {
+                my $Win = 0;
+                $Win = 1 if $_ =~ /^\*/;
+                $_ =~ m|^.?Player[ ](.+)[ ]shows:[ ](.+)\.[ ]Bets:[ ](\d+)\.
+                        [ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)\.$|x;
+
+                if(not $ID) {
+                        die "Aufdecken ohne ID.";
+                }
+
+                my $Nick = $1;
+                my $Karten = $2;
+                my $Einlage = $3;
+                my $Einsammlung = $4;
+                my $Ausgang = $5;
+                my $Umsatz = $6;
+
+                push(@Showdown, "$Nick: shows $Karten\n");
+                push(@Kollekte, "$Nick: collected $Einsammlung from pot\n");
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
                         die "Zusammenfassung ohne ID";
@@ -213,6 +236,9 @@ while ($_ = <STDIN>) {
 
                 push @Zusammenfassung, "Board $Brett\n";
         } elsif(/^Game ended at:/) {
+                print("*** SHOW DOWN ***\n") if @Showdown;
+                print(@Showdown);
+                print(@Kollekte);
                 print(@Zusammenfassung);
                 print("\n\n");
         } elsif(/^$/) {
