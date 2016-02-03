@@ -289,7 +289,8 @@ while ($_ = <STDIN>) {
         } elsif(/^.?Player .+ mucks/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
-                $_ =~ m|^.?Player[ ](.+)[ ]mucks.*[ ]Bets:[ ](\d+)\.[ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)|;
+                $_ =~ m|^.?Player[ ](.+)[ ]mucks.*[ ]Bets:[ ](\d+)\.
+                [ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)|x;
 
                 if(not $ID) {
                         die "Wegwerfen ohne ID.";
