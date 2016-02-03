@@ -20,11 +20,11 @@ sub Blatt_konvertieren {
         $Blatt =~ s/^Two pairs\. (.+)$/two pair, $1/;
         $Blatt =~ s/^Three Of Kind of (.+)$/three of a kind, $1/;
         $Blatt =~ s/^Four Of Kind of (.+)$/four of a kind, $1/;
-        $Blatt =~ s/^Straight to (.+)$/a straight, % to $1/;
+        $Blatt =~ s/^Straight to (.+)$/a straight, % to $1/; #TODO
         $Blatt =~ s/^Flush, (.+) high$/a flush, $1 high/;
         $Blatt =~ s|^Full[ ]House[ ]\((.+)/(.+)\)$
                    |a full house, $1 full of $2|x;
-        #TODO: „Straight-Flush“
+        $Blatt =~ s/^Straight Flush to (.+) .+$/a straight flush, $1 high/;
 
         return $Blatt;
 }
