@@ -14,6 +14,7 @@ my @Kollekte = ();
 my %Platz = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
+my $Zustand;
 
 sub Blatt_konvertieren {
         my $Blatt = $1;
@@ -63,6 +64,7 @@ while ($_ = <STDIN>) {
                 $Einsatz = $Big_Blind if not defined $Einsatz;
                 @Zusammenfassung = @Showdown = @Kollekte = ();
                 %Platz = ();
+                $Zustand = undef;
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -151,6 +153,10 @@ while ($_ = <STDIN>) {
                         die "Turn/River/Flop ohne ID";
                 }
 
+                $Zustand = "Turn" if $_ =~ m/TURN/;
+                $Zustand = "River" if $_ =~ m/RIVER/;
+                $Zustand = "Flop" if $_ =~ m/FLOP/;
+
                 print("$_\n");
         } elsif(/^Player .+ calls \(\d+\)$/) {
                 $_ =~ m|^Player (.+) calls \((\d+)\)$|;
@@ -196,17 +202,26 @@ while ($_ = <STDIN>) {
                 my $Neuer_Einsatz = $2;
 
                 print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
-        } elsif(/^Player .+ (folds|checks)$/) {
-                $_ =~ m|^Player (.+) (folds\|checks)$|;
+        } elsif(/^Player .+ folds$/) {
+                $_ =~ m|^Player (.+) folds$|;
 
                 if(not $ID) {
-                        die "Fold/Check ohne ID.";
+                        die "Fold ohne ID.";
                 }
 
                 my $Nick = $1;
-                my $Aktion = $2;
 
-                print($Nick . ": " . $Aktion . "\n");
+                print($Nick . ": folds\n");
+        } elsif(/^Player .+ checks$/) {
+                $_ =~ m|^Player (.+) checks$|;
+
+                if(not $ID) {
+                        die "Check ohne ID.";
+                }
+
+                my $Nick = $1;
+
+                print($Nick . ": checks\n");
         } elsif(/^Player .+ mucks cards$/) {
                 $_ =~ m|^Player (.+) mucks cards$|;
 
