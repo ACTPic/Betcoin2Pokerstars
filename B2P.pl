@@ -11,6 +11,9 @@ my $Einsatz;
 my @Zusammenfassung = ();
 my @Showdown = ();
 my @Kollekte = ();
+my %Platz = ();
+my ($Small_Blind_Sitz, $Big_Blind_Sitz);
+my $Knopf;
 
 sub Blatt_konvertieren {
         my $Blatt = $1;
@@ -59,6 +62,7 @@ while ($_ = <STDIN>) {
                 $Erstekarte = undef;
                 $Einsatz = $Big_Blind if not defined $Einsatz;
                 @Zusammenfassung = @Showdown = @Kollekte = ();
+                %Platz = ();
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -71,7 +75,7 @@ while ($_ = <STDIN>) {
                         die "Knopf ohne ID.";
                 }
 
-                my $Knopf = $1;
+                $Knopf = $1;
 
                 print("Table '" . $ID . " 1' 9-max Seat #" . $Knopf .
                       " is the button\n");
@@ -85,6 +89,8 @@ while ($_ = <STDIN>) {
                 my $Sitz = $1;
                 my $Chips = $3;
                 my $Nick = $2;
+
+                $Platz{$Sitz} = $Nick;
 
                 print("Seat " . $Sitz . ": " . $Nick .
                       " (" . $Chips . " in chips)\n");
@@ -109,6 +115,16 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
                 my $Blindtyp = $2;
                 my $Blind = $3;
+
+                foreach my $Sitz (sort keys %Platz) {
+                        if($Nick eq $Platz{$Sitz}) {
+                                if($Blindtyp eq 'small blind') {
+                                        $Small_Blind_Sitz = $Sitz;
+                                } else {
+                                        $Big_Blind_Sitz = $Sitz;
+                                }
+                        }
+                }
 
                 print($Nick . ": posts " . $Blindtyp . " " . $Blind . "\n");
         } elsif(/^Player .+ received a card.$/) {
@@ -304,6 +320,15 @@ while ($_ = <STDIN>) {
                 print(@Showdown);
                 print(@Kollekte);
                 print(@Zusammenfassung);
+
+                foreach my $Sitz (sort keys %Platz) {
+                        print("Seat $Sitz: $Platz{$Sitz}");
+                        print(" (button)") if $Sitz == $Knopf;
+                        print(" (small blind)") if $Sitz == $Small_Blind_Sitz;
+                        print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
+                        print("\n");
+                }
+
                 print("\n\n");
         } elsif(/^$/) {
                 print("\n");
