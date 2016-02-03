@@ -12,6 +12,7 @@ my @Zusammenfassung = ();
 my @Showdown = ();
 my @Kollekte = ();
 my %Platz = ();
+my %Aktion = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
 my $Zustand;
@@ -64,6 +65,7 @@ while ($_ = <STDIN>) {
                 $Einsatz = $Big_Blind if not defined $Einsatz;
                 @Zusammenfassung = @Showdown = @Kollekte = ();
                 %Platz = ();
+                %Aktion = ();
                 $Zustand = undef;
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
@@ -179,6 +181,8 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
                 $Einsatz = $2;
 
+                $Aktion{$Nick} = "All-in";
+
                 print($Nick . ": bets " . $Einsatz . " and is all-in\n");
         } elsif(/^Player .+ bets \(\d+\)$/) {
                 $_ =~ m|^Player (.+) bets \((\d+)\)$|;
@@ -189,6 +193,8 @@ while ($_ = <STDIN>) {
 
                 my $Nick = $1;
                 my $Neuer_Einsatz = $2;
+
+                $Aktion{$Nick} = "Bet";
 
                 print($Nick . ": bets " . $Neuer_Einsatz . "\n");
         } elsif(/^Player .+ raises \(\d+\)$/) {
@@ -201,6 +207,8 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
                 my $Neuer_Einsatz = $2;
 
+                $Aktion{$Nick} = "Raise";
+
                 print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
         } elsif(/^Player .+ folds$/) {
                 $_ =~ m|^Player (.+) folds$|;
@@ -210,6 +218,16 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
+                if(not defined $Zustand) {
+                        $Aktion{$Nick} = "folded before Flop";
+                        $Aktion{$Nick} .= " (didn't bet)" if !$Aktion{$Nick};
+                } elsif($Zustand eq "Flop") {
+                        $Aktion{$Nick} = "folded on the Flop";
+                } elsif($Zustand eq "Turn") {
+                        $Aktion{$Nick} = "folded on the Turn";
+                } elsif($Zustand eq "River") {
+                        $Aktion{$Nick} = "folded on the River";
+                }
 
                 print($Nick . ": folds\n");
         } elsif(/^Player .+ checks$/) {
@@ -220,6 +238,8 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
+
+                $Aktion{$Nick} = "Check";
 
                 print($Nick . ": checks\n");
         } elsif(/^Player .+ mucks cards$/) {
@@ -342,6 +362,9 @@ while ($_ = <STDIN>) {
                         print(" (button)") if $Sitz == $Knopf;
                         print(" (small blind)") if $Sitz == $Small_Blind_Sitz;
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
+                        if(defined $Aktion{$Platz{$Sitz}}) {
+                                print(" " . $Aktion{$Platz{$Sitz}});
+                        }
                         print("\n");
                 }
 
