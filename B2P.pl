@@ -202,9 +202,16 @@ while ($_ = <STDIN>) {
 
                 print($Nick . ": mucks hand\n");
         } elsif(/^Uncalled bet \(\d+\) returned to .+$/) {
+                $_ =~ m|^Uncalled bet \((\d+)\) returned to (.+)$|;
+
                 if(not $ID) {
                         die "Return ohne ID.";
                 }
+
+                my $Einlage = $1;
+                my $Nick = $2;
+
+                print("Uncalled bet ($Einlage) returned to $Nick\n");
         } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]Bets:[ ]\d+\.[ ]
                 Collects:[ ]\d+\.[ ].+:[ ]\d+\.$/x) {
                 my $Win = 0;
