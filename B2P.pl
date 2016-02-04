@@ -219,8 +219,9 @@ while ($_ = <STDIN>) {
 
                 my $Nick = $1;
                 if(not defined $Zustand) {
+                        my $Bet = defined $Aktion{$Nick};
                         $Aktion{$Nick} = "folded before Flop";
-                        $Aktion{$Nick} .= " (didn't bet)" if !$Aktion{$Nick};
+                        $Aktion{$Nick} .= " (didn't bet)" unless $Bet;
                 } elsif($Zustand eq "Flop") {
                         $Aktion{$Nick} = "folded on the Flop";
                 } elsif($Zustand eq "Turn") {
