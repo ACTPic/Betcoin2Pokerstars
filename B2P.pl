@@ -16,6 +16,7 @@ my %Aktion = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
 my $Zustand;
+my ($Gewinn, $Gewinner);
 
 sub Blatt_konvertieren {
         my $Blatt = $1;
@@ -67,6 +68,7 @@ while ($_ = <STDIN>) {
                 %Platz = ();
                 %Aktion = ();
                 $Zustand = undef;
+                $Gewinn = $Gewinner = undef;
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -282,10 +284,10 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $5;
                 my $Umsatz = $6;
 
-                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
-                      "$Ausgang=$Umsatz\n";
-
-                #TODO
+                if($Win) {
+                        $Gewinner = $Nick;
+                        $Gewinn = $Einsammlung;
+                }
 
                 $Karten =~ /^(.+) (\[.+\])$/;
                 my $Blatt = Blatt_konvertieren($1);
@@ -308,11 +310,6 @@ while ($_ = <STDIN>) {
                 my $Einsammlung = $3;
                 my $Ausgang = $4;
                 my $Umsatz = $5;
-
-                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
-                      "$Ausgang=$Umsatz\n";
-
-                #TODO
         } elsif(/^.?Player .+ mucks/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
@@ -329,10 +326,10 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $4;
                 my $Umsatz = $5;
 
-                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
-                      "$Ausgang=$Umsatz\n";
-
-                #TODO
+                if($Win) {
+                        $Gewinner = $Nick;
+                        $Gewinn = $Einsammlung;
+                }
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
                         die "Zusammenfassung ohne ID";
@@ -366,13 +363,19 @@ while ($_ = <STDIN>) {
                 print(@Zusammenfassung);
 
                 foreach my $Sitz (sort keys %Platz) {
-                        print("Seat $Sitz: $Platz{$Sitz}");
+                        my $Nick = $Platz{$Sitz};
+                        print("Seat $Sitz: $Nick");
                         print(" (button)") if $Sitz == $Knopf;
                         print(" (small blind)") if $Sitz == $Small_Blind_Sitz;
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
                         if(defined $Aktion{$Platz{$Sitz}}) {
                                 print(" " . $Aktion{$Platz{$Sitz}});
                         }
+
+                        if($Nick eq $Gewinner) {
+                                print(" and won ($Gewinn)");
+                        }
+
                         print("\n");
                 }
 
