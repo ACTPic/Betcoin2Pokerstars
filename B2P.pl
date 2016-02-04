@@ -32,6 +32,34 @@ sub Blatt_konvertieren {
                    |a full house, $1 full of $2|x;
         $Blatt =~ s/^Straight Flush to (.+) .+$/a straight flush, $1 high/;
 
+        $Blatt =~ s/card 3$/Three/;
+        $Blatt =~ s/card 4$/Four/;
+        $Blatt =~ s/card 5$/Five/;
+        $Blatt =~ s/card 6$/Six/;
+        $Blatt =~ s/card 7$/Seven/;
+        $Blatt =~ s/card 8$/Eight/;
+        $Blatt =~ s/card 9$/Nine/;
+        $Blatt =~ s/card 10$/Ten/;
+        $Blatt =~ s/card J$/Jack/;
+        $Blatt =~ s/card Q$/Queen/;
+        $Blatt =~ s/card K$/King/;
+        $Blatt =~ s/card A$/Ace/;
+
+
+        $Blatt =~ s/2s/Deuces/;
+        $Blatt =~ s/3s/Threes/;
+        $Blatt =~ s/4s/Fours/;
+        $Blatt =~ s/5s/Fives/;
+        $Blatt =~ s/6s/Sixes/;
+        $Blatt =~ s/7s/Sevens/;
+        $Blatt =~ s/8s/Eights/;
+        $Blatt =~ s/9s/Nines/;
+        $Blatt =~ s/10s/Tens/;
+        $Blatt =~ s/Js/Jacks/;
+        $Blatt =~ s/Qs/Queens/;
+        $Blatt =~ s/Ks/Kings/;
+        $Blatt =~ s/As/Aces/;
+
         return $Blatt;
 }
 
