@@ -13,6 +13,8 @@ my @Showdown = ();
 my @Kollekte = ();
 my %Platz = ();
 my %Aktion = ();
+my %Blaetter = ();
+my %Kurz = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
 my $Zustand;
@@ -125,6 +127,8 @@ while ($_ = <STDIN>) {
                 my $Nick = $2;
 
                 $Platz{$Sitz} = $Nick;
+                $Blaetter{$Nick} = undef;
+                $Kurz{$Nick} = undef;
 
                 print("Seat " . $Sitz . ": " . $Nick .
                       " (" . $Chips . " in chips)\n");
@@ -321,8 +325,13 @@ while ($_ = <STDIN>) {
                 my $Blatt = Blatt_konvertieren($1);
                 my $Kuerzel = $2;
 
+                $Blaetter{$Nick} = $Blatt;
+                $Kurz{$Nick} = $Kuerzel;
+
                 push(@Showdown, "$Nick: shows $Kuerzel ($Blatt)\n");
                 push(@Kollekte, "$Nick: collected $Einsammlung from pot\n");
+
+                $Aktion{$Nick} = "collected $Einsammlung from pot";
         } elsif(/^.?Player .+ does not show cards/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
@@ -357,6 +366,7 @@ while ($_ = <STDIN>) {
                 if($Win) {
                         $Gewinner = $Nick;
                         $Gewinn = $Einsammlung;
+                        $Aktion{$Nick} = "collected $Einsammlung from pot";
                 }
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
@@ -396,12 +406,19 @@ while ($_ = <STDIN>) {
                         print(" (button)") if $Sitz == $Knopf;
                         print(" (small blind)") if $Sitz == $Small_Blind_Sitz;
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
-                        if(defined $Aktion{$Platz{$Sitz}}) {
-                                print(" " . $Aktion{$Platz{$Sitz}});
-                        }
 
-                        if($Nick eq $Gewinner) {
-                                print(" and won ($Gewinn)");
+                        if(defined $Blaetter{$Nick}) {
+                                if($Nick eq $Gewinner) {
+                                        print(" showed $Kurz{$Nick}" .
+                                              " and won ($Gewinn) with a " .
+                                              $Blaetter{$Nick});
+                                } else {
+                                        print(" showed $Kurz{$Nick}" .
+                                              " and lost with a " .
+                                              $Blaetter{$Nick});
+                                }
+                        } elsif(defined $Aktion{$Platz{$Sitz}}) {
+                                print(" " . $Aktion{$Platz{$Sitz}});
                         }
 
                         print("\n");
