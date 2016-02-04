@@ -282,6 +282,11 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $5;
                 my $Umsatz = $6;
 
+                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
+                      "$Ausgang=$Umsatz\n";
+
+                #TODO
+
                 $Karten =~ /^(.+) (\[.+\])$/;
                 my $Blatt = Blatt_konvertieren($1);
                 my $Kuerzel = $2;
@@ -304,9 +309,10 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $4;
                 my $Umsatz = $5;
 
-                print "«$1: Einlage=$2 Einsammlung=$3 $4=$5\n";
+                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
+                      "$Ausgang=$Umsatz\n";
 
-                #Keine direkte Ausgabe. Im Zielformat so nicht drin.
+                #TODO
         } elsif(/^.?Player .+ mucks/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
@@ -323,9 +329,10 @@ while ($_ = <STDIN>) {
                 my $Ausgang = $4;
                 my $Umsatz = $5;
 
-                print "«$1: Einlage=$2 Einsammlung=$3 $4=$5\n";
+                print "«$Nick: Einlage=$Einlage Einsammlung=$Einsammlung " .
+                      "$Ausgang=$Umsatz\n";
 
-                #Keine direkte Ausgabe. Im Zielformat so nicht drin.
+                #TODO
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
                         die "Zusammenfassung ohne ID";
