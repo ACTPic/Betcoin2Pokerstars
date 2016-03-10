@@ -30,10 +30,10 @@ for i in HH*.txt; do
                 # Perl-Skript die Spieledaten konvertieren lassen
                 ../B2P.pl < ../Betcoin.txt > ../out/$out 2>../out/FEHLER_$out
             else
-                echo "Rekodieren ergab nicht den gewünschten Zeichensatz." 1>&2
+                echo "$i: Rekodieren ergab nicht den gewünschten Zeichensatz." 1>&2
             fi
         else
-            echo "Zeichensatz ist '$Charset' statt '$Wanted_Charset'." 1>&2
+            echo "$i: Zeichensatz ist '$Charset' statt '$Wanted_Charset'." 1>&2
         fi
         find ../out -empty -type f -delete
     fi
