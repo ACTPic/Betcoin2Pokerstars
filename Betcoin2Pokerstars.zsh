@@ -15,9 +15,11 @@ for i in HH*.txt; do
         Charset=`file ../Betcoin.txt`
         Wanted_Charset="../Betcoin.txt: "
         Wanted_Charset+="Little-endian UTF-16 Unicode text, "
+        Wanted_Charset2=$Wanted_Charset
         Wanted_Charset+="with CRLF line terminators"
+        Wanted_Charset2+="with CRLF, CR line terminators"
 
-        if test "$Charset" = "$Wanted_Charset"; then
+        if test "$Charset" = "$Wanted_Charset" -o "$Charset" = "$Wanted_Charset2"; then
             # Zeichensatz Rekodieren von UTF16 nach UTF8
             recode utf16..utf8 ../Betcoin.txt
 
