@@ -129,8 +129,8 @@ while ($_ = <STDIN>) {
 
                 print("Table '" . $ID . " 1' 9-max Seat #" . $Knopf .
                       " is the button\n");
-        } elsif(/^Seat \d+:.+ \(\d+\)\.$/) {
-                $_ =~ m|^Seat (\d+): (.*) \((\d+)\)\.$|;
+        } elsif(/^Seat \d+:.+ \([0-9.]+\)\.$/) {
+                $_ =~ m|^Seat (\d+): (.*) \(([0-9.]+)\)\.$|;
 
                 if(not $ID) {
                         die "Sitz ohne ID.";
@@ -146,8 +146,8 @@ while ($_ = <STDIN>) {
 
                 print("Seat " . $Sitz . ": " . $Nick .
                       " (" . $Chips . " in chips)\n");
-        } elsif(/^Player .+ ante \(\d+\)$/) {
-                $_ =~ m|^Player (.+) ante \((\d+)\)$|;
+        } elsif(/^Player .+ ante \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) ante \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "Voreinsatz ohne ID.";
@@ -157,8 +157,8 @@ while ($_ = <STDIN>) {
                 my $Voreinsatz = $2;
 
                 print($Nick . ": posts the ante " . $Voreinsatz . "\n");
-        } elsif(/^Player .+ has (small|big) blind \(\d+\)$/) {
-                $_ =~ m|^Player (.+) has (.+) \((\d+)\)$|;
+        } elsif(/^Player .+ has (small|big) blind \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) has (.+) \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "Blind ohne ID.";
@@ -208,8 +208,8 @@ while ($_ = <STDIN>) {
                 $Zustand = "Flop" if $_ =~ m/FLOP/;
 
                 print("$_\n");
-        } elsif(/^Player .+ calls \(\d+\)$/) {
-                $_ =~ m|^Player (.+) calls \((\d+)\)$|;
+        } elsif(/^Player .+ calls \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) calls \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "Call ohne ID.";
@@ -219,8 +219,8 @@ while ($_ = <STDIN>) {
                 $Einsatz = $2;
 
                 print($Nick . ": calls " . $Einsatz . "\n");
-        } elsif(/^Player .+ allin \(\d+\)$/) {
-                $_ =~ m|^Player (.+) allin \((\d+)\)$|;
+        } elsif(/^Player .+ allin \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) allin \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "All-In ohne ID.";
@@ -232,8 +232,8 @@ while ($_ = <STDIN>) {
                 $Aktion{$Nick} = "All-in";
 
                 print($Nick . ": bets " . $Einsatz . " and is all-in\n");
-        } elsif(/^Player .+ bets \(\d+\)$/) {
-                $_ =~ m|^Player (.+) bets \((\d+)\)$|;
+        } elsif(/^Player .+ bets \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) bets \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "Bet ohne ID.";
@@ -245,8 +245,8 @@ while ($_ = <STDIN>) {
                 $Aktion{$Nick} = "Bet";
 
                 print($Nick . ": bets " . $Neuer_Einsatz . "\n");
-        } elsif(/^Player .+ raises \(\d+\)$/) {
-                $_ =~ m|^Player (.+) raises \((\d+)\)$|;
+        } elsif(/^Player .+ raises \([0-9.]+\)$/) {
+                $_ =~ m|^Player (.+) raises \(([0-9.]+)\)$|;
 
                 if(not $ID) {
                         die "Raise ohne ID.";
@@ -301,8 +301,8 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
 
                 print($Nick . ": mucks hand\n");
-        } elsif(/^Uncalled bet \(\d+\) returned to .+$/) {
-                $_ =~ m|^Uncalled bet \((\d+)\) returned to (.+)$|;
+        } elsif(/^Uncalled bet \([0-9.]+\) returned to .+$/) {
+                $_ =~ m|^Uncalled bet \(([0-9.]+)\) returned to (.+)$|;
 
                 if(not $ID) {
                         die "Return ohne ID.";
@@ -312,12 +312,12 @@ while ($_ = <STDIN>) {
                 my $Nick = $2;
 
                 print("Uncalled bet ($Einlage) returned to $Nick\n");
-        } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]Bets:[ ]\d+\.[ ]
-                Collects:[ ]\d+\.[ ].+:[ ]\d+\.$/x) {
+        } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]Bets:[ ][0-9.]+\.[ ]
+                Collects:[ ][0-9.]+\.[ ].+:[ ][0-9.]+\.$/x) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
-                $_ =~ m|^.?Player[ ](.+)[ ]shows:[ ](.+)\.[ ]Bets:[ ](\d+)\.
-                        [ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)\.$|x;
+                $_ =~ m|^.?Player[ ](.+)[ ]shows:[ ](.+)\.[ ]Bets:[ ]([0-9.]+)\.
+                        [ ]Collects:[ ]([0-9.]+)\.[ ](.+):[ ]([0-9.]+)\.$|x;
 
                 if(not $ID) {
                         die "Aufdecken ohne ID.";
@@ -349,8 +349,8 @@ while ($_ = <STDIN>) {
         } elsif(/^.?Player .+ does not show cards/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
-                $_ =~ m|^.?Player[ ](.+)[ ]does[ ]not[ ].*Bets:[ ](\d+)\.
-                        [ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)|x;
+                $_ =~ m|^.?Player[ ](.+)[ ]does[ ]not[ ].*Bets:[ ]([0-9.]+)\.
+                        [ ]Collects:[ ]([0-9.]+)\.[ ](.+):[ ]([0-9.]+)|x;
 
                 if(not $ID) {
                         die "Wegwerfen ohne ID.";
@@ -364,8 +364,8 @@ while ($_ = <STDIN>) {
         } elsif(/^.?Player .+ mucks/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
-                $_ =~ m|^.?Player[ ](.+)[ ]mucks.*[ ]Bets:[ ](\d+)\.
-                [ ]Collects:[ ](\d+)\.[ ](.+):[ ](\d+)|x;
+                $_ =~ m|^.?Player[ ](.+)[ ]mucks.*[ ]Bets:[ ]([0-9.]+)\.
+                [ ]Collects:[ ]([0-9.]+)\.[ ](.+):[ ]([0-9.]+)|x;
 
                 if(not $ID) {
                         die "Wegwerfen ohne ID.";
@@ -388,8 +388,8 @@ while ($_ = <STDIN>) {
                 }
 
                 push @Zusammenfassung, "*** SUMMARY ***\n";
-        } elsif(/^Pot: \d+$/) {
-                $_ =~ m|^Pot: (\d+)$|;
+        } elsif(/^Pot: [0-9.]+$/) {
+                $_ =~ m|^Pot: ([0-9.]+)$|;
 
                 if(not $ID) {
                         die "Pot ohne ID.";
