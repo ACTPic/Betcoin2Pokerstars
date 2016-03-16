@@ -382,6 +382,12 @@ while ($_ = <STDIN>) {
                         $Gewinn = $Einsammlung;
                         $Aktion{$Nick} = "collected ($Einsammlung) from pot";
                 }
+        } elsif(/^Player .+ is timed out\./) {
+                $_ =~ m|^Player (.+) is timed out\.$|;
+
+                my $Nick = $1;
+
+                print($Nick . " is sitting out\n");
         } elsif(/^------ Summary ------$/) {
                 if(not $ID) {
                         die "Zusammenfassung ohne ID";
