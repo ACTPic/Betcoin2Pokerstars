@@ -312,11 +312,11 @@ while ($_ = <STDIN>) {
                 my $Nick = $2;
 
                 print("Uncalled bet ($Einlage) returned to $Nick\n");
-        } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]Bets:[ ][0-9.]+\.[ ]
+        } elsif(/^.?Player[ ].+[ ]shows:[ ].+\.[ ]?Bets:[ ][0-9.]+\.[ ]
                 Collects:[ ][0-9.]+\.[ ].+:[ ][0-9.]+\.$/x) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
-                $_ =~ m|^.?Player[ ](.+)[ ]shows:[ ](.+)\.[ ]Bets:[ ]([0-9.]+)\.
+                $_ =~ m|^.?Player[ ](.+)[ ]shows:[ ](.+)\.[ ]?Bets:[ ]([0-9.]+)\.
                         [ ]Collects:[ ]([0-9.]+)\.[ ](.+):[ ]([0-9.]+)\.$|x;
 
                 if(not $ID) {
