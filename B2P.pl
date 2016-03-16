@@ -96,7 +96,7 @@ while ($_ = <STDIN>) {
 
                 $ID = $Zeit->epoch() if not defined $ID;
         } elsif(/^Game ID: \d+/) {
-                $_ =~ m|^Game ID: (\d+) (\d+)/(\d+)|;
+                $_ =~ m|^Game ID: (\d+) ([0-9.]+)/([0-9.]+)|;
 
                 if(not $Startzeile or not $Zeit) {
                         die "Handnummer ohne Startzeile/Zeit eingelesen.";
