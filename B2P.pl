@@ -29,11 +29,10 @@ my %Platz = ();
 my %Aktion = ();
 my %Blaetter = ();
 my %Kurz = ();
-my %Gewinner = ();
+my %Gewinn = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
 my $Zustand;
-my $Gewinn;
 
 sub Blatt_konvertieren {
         my $Blatt = $1;
@@ -113,8 +112,7 @@ while ($_ = <STDIN>) {
                 %Platz = ();
                 %Aktion = ();
                 $Zustand = undef;
-                $Gewinn = undef;
-                %Gewinner = ();
+                %Gewinn = ();
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -333,8 +331,7 @@ while ($_ = <STDIN>) {
                 my $Umsatz = $6;
 
                 if($Win) {
-                        $Gewinner{$Nick} = 1;
-                        $Gewinn = $Einsammlung;
+                        $Gewinn{$Nick} = $Einsammlung;
                 }
 
                 $Karten =~ /^(.+) (\[.+\])$/;
@@ -380,8 +377,7 @@ while ($_ = <STDIN>) {
                 my $Umsatz = $5;
 
                 if($Win) {
-                        $Gewinner{$Nick} = 1;
-                        $Gewinn = $Einsammlung;
+                        $Gewinn{$Nick} = $Einsammlung;
                         $Aktion{$Nick} = "collected ($Einsammlung) from pot";
                 }
         } elsif(/^Player .+ is timed out\./) {
@@ -430,9 +426,10 @@ while ($_ = <STDIN>) {
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
 
                         if(defined $Blaetter{$Nick}) {
-                                if(defined $Gewinner{$Nick}) {
+                                if(defined $Gewinn{$Nick}) {
                                         print(" showed $Kurz{$Nick}" .
-                                              " and won ($Gewinn) with a " .
+                                              " and won ($Gewinn{$Nick})" .
+                                              " with a " .
                                               $Blaetter{$Nick});
                                 } else {
                                         print(" showed $Kurz{$Nick}" .
