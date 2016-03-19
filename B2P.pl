@@ -29,10 +29,11 @@ my %Platz = ();
 my %Aktion = ();
 my %Blaetter = ();
 my %Kurz = ();
+my %Gewinner = ();
 my ($Small_Blind_Sitz, $Big_Blind_Sitz);
 my $Knopf;
 my $Zustand;
-my ($Gewinn, $Gewinner);
+my $Gewinn;
 
 sub Blatt_konvertieren {
         my $Blatt = $1;
@@ -112,7 +113,8 @@ while ($_ = <STDIN>) {
                 %Platz = ();
                 %Aktion = ();
                 $Zustand = undef;
-                $Gewinn = $Gewinner = undef;
+                $Gewinn = undef;
+                %Gewinner = ();
 
                 print('PokerStars Hand #43' . $Zeit->second . $Hand .
                       ': Tournament #' . $ID .
@@ -331,7 +333,7 @@ while ($_ = <STDIN>) {
                 my $Umsatz = $6;
 
                 if($Win) {
-                        $Gewinner = $Nick;
+                        $Gewinner{$Nick} = 1;
                         $Gewinn = $Einsammlung;
                 }
 
@@ -378,7 +380,7 @@ while ($_ = <STDIN>) {
                 my $Umsatz = $5;
 
                 if($Win) {
-                        $Gewinner = $Nick;
+                        $Gewinner{$Nick} = 1;
                         $Gewinn = $Einsammlung;
                         $Aktion{$Nick} = "collected $Einsammlung from pot";
                 }
@@ -428,7 +430,7 @@ while ($_ = <STDIN>) {
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
 
                         if(defined $Blaetter{$Nick}) {
-                                if($Nick eq $Gewinner) {
+                                if(defined $Gewinner{$Nick}) {
                                         print(" showed $Kurz{$Nick}" .
                                               " and won ($Gewinn) with a " .
                                               $Blaetter{$Nick});
