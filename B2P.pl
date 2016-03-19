@@ -343,9 +343,9 @@ while ($_ = <STDIN>) {
                 $Kurz{$Nick} = $Kuerzel;
 
                 push(@Showdown, "$Nick: shows $Kuerzel ($Blatt)\n");
-                push(@Kollekte, "$Nick: collected ($Einsammlung) from pot\n");
+                push(@Kollekte, "$Nick: collected $Einsammlung from pot\n");
 
-                $Aktion{$Nick} = "collected ($Einsammlung) from pot";
+                $Aktion{$Nick} = "collected $Einsammlung from pot";
         } elsif(/^.?Player .+ does not show cards/) {
                 my $Win = 0;
                 $Win = 1 if $_ =~ /^\*/;
@@ -380,7 +380,7 @@ while ($_ = <STDIN>) {
                 if($Win) {
                         $Gewinner = $Nick;
                         $Gewinn = $Einsammlung;
-                        $Aktion{$Nick} = "collected ($Einsammlung) from pot";
+                        $Aktion{$Nick} = "collected $Einsammlung from pot";
                 }
         } elsif(/^Player .+ is timed out\./) {
                 $_ =~ m|^Player (.+) is timed out\.$|;
