@@ -42,12 +42,34 @@ sub Blatt_konvertieren {
         $Blatt =~ s/^Two pairs\. (.+)$/two pair, $1/;
         $Blatt =~ s/^Three Of Kind of (.+)$/three of a kind, $1/;
         $Blatt =~ s/^Four Of Kind of (.+)$/four of a kind, $1/;
-        $Blatt =~ s/^Straight to (.+)$/a straight, % to $1/; #TODO
+
+        if($Blatt =~ m/^Straight to (.+)$/) {
+                my @Folge = ("2", "3", "4", "5", "6", "7", "8", "9",
+                             "T", "J", "Q", "K", "A");
+
+                my %Folge = ("A" => "Ten",
+                             "K" => "Nine",
+                             "Q" => "Eight",
+                             "J" => "Seven",
+                             "T" => "Six",
+                             "9" => "Five",
+                             "8" => "Four",
+                             "7" => "Three",
+                             "6" => "Deuce",
+                             "5" => "Ace",
+                );
+                my $Zu = $1;
+                my $Von = $Folge{$Zu};
+                $Blatt = "a straight, $Von to card $Zu";
+        }
+
         $Blatt =~ s/^Flush, (.+) high$/a flush, $1 high/;
         $Blatt =~ s|^Full[ ]House[ ]\((.+)/(.+)\)$
                    |a full house, $1 full of $2|x;
         $Blatt =~ s/^Straight Flush to (.+) .+$/a straight flush, $1 high/;
 
+
+        $Blatt =~ s/card 2$/Deuce/;
         $Blatt =~ s/card 3$/Three/;
         $Blatt =~ s/card 4$/Four/;
         $Blatt =~ s/card 5$/Five/;
@@ -426,6 +448,8 @@ while ($_ = <STDIN>) {
                         print(" (big blind)") if $Sitz == $Big_Blind_Sitz;
 
                         if(defined $Blaetter{$Nick}) {
+                                $Blaetter{$Nick} =~ s/a //;
+
                                 if(defined $Gewinn{$Nick}) {
                                         print(" showed $Kurz{$Nick}" .
                                               " and won ($Gewinn{$Nick})" .
