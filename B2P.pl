@@ -129,7 +129,7 @@ while ($_ = <STDIN>) {
                 $Big_Blind = $3;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
-                $Einsatz = $Big_Blind if not defined $Einsatz;
+                $Einsatz = $Big_Blind;
                 @Zusammenfassung = @Showdown = @Kollekte = ();
                 %Platz = ();
                 %Aktion = ();
