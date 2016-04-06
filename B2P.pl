@@ -273,11 +273,11 @@ while ($_ = <STDIN>) {
                 }
 
                 my $Nick = $1;
-                my $Neuer_Einsatz = $2;
+                $Einsatz = $2;
 
                 $Aktion{$Nick} = "Bet";
 
-                print($Nick . ": bets " . $Neuer_Einsatz . "\n");
+                print($Nick . ": bets " . $Einsatz . "\n");
         } elsif(/^Player .+ raises \([0-9.]+\)$/) {
                 $_ =~ m|^Player (.+) raises \(([0-9.]+)\)$|;
 
