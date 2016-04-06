@@ -14,6 +14,10 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 
+mkdir -p in
+mkdir -p err
+mkdir -p out
+
 cd in
 for i in HH*.txt; do
     o=${i/-G/}
@@ -44,13 +48,14 @@ for i in HH*.txt; do
             Wanted_Charset+="with CRLF line terminators"
             if test "$Charset" = "$Wanted_Charset"; then
                 # Perl-Skript die Spieledaten konvertieren lassen
-                ../B2P.pl < ../Betcoin.txt > ../out/$out 2>../out/FEHLER_$out
+                ../B2P.pl < ../Betcoin.txt > ../out/$out 2>../err/FEHLER_$out
             else
                 echo "$i: Rekodieren ergab nicht den gewünschten Zeichensatz." 1>&2
             fi
         else
             echo "$i: Zeichensatz ist '$Charset' statt '$Wanted_Charset'." 1>&2
         fi
-        find ../out -empty -type f -delete
     fi
 done
+
+find ../err -empty -type f -delete
