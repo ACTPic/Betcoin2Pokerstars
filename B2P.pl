@@ -277,9 +277,22 @@ while ($_ = <STDIN>) {
                 my $Nick = $1;
                 my $Neuer_Einsatz = $2;
 
+                foreach my $Sitz (sort keys %Platz) {
+                        if($Nick eq $Platz{$Sitz}) {
+                                if($Small_Blind_Sitz == $Sitz) {
+                                        $Neuer_Einsatz += $Small_Blind;
+                                } elsif($Big_Blind_Sitz == $Sitz) {
+                                        $Neuer_Einsatz += $Big_Blind;
+                                }
+                        }
+                }
+
                 $Aktion{$Nick} = "Raise";
 
-                print($Nick . ": raises $Einsatz to $Neuer_Einsatz\n");
+                my $Alter_Einsatz = $Neuer_Einsatz - $Einsatz;
+
+                print($Nick . ": raises $Alter_Einsatz to $Neuer_Einsatz\n");
+                $Einsatz = $Neuer_Einsatz;
         } elsif(/^Player .+ folds$/) {
                 $_ =~ m|^Player (.+) folds$|;
 
