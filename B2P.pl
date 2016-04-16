@@ -315,7 +315,21 @@ while ($_ = <STDIN>) {
                 if(not defined $Zustand) {
                         my $Bet = defined $Aktion{$Nick};
                         $Aktion{$Nick} = "folded before Flop";
-                        $Aktion{$Nick} .= " (didn't bet)" unless $Bet;
+
+                        my $Blind = 0;
+                        foreach my $Sitz (sort keys %Platz) {
+                                if($Nick eq $Platz{$Sitz}) {
+                                        if($Small_Blind_Sitz == $Sitz) {
+                                                $Blind = 1;
+                                        } elsif($Big_Blind_Sitz == $Sitz) {
+                                                $Blind = 2;
+                                        }
+                                }
+                        }
+
+                        unless($Bet || $Blind) {
+                                $Aktion{$Nick} .= " (didn't bet)";
+                        }
                 } elsif($Zustand eq "Flop") {
                         $Aktion{$Nick} = "folded on the Flop";
                 } elsif($Zustand eq "Turn") {
