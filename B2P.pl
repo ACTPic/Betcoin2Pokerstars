@@ -138,6 +138,7 @@ while ($_ = <STDIN>) {
                 $Hand = $1;
                 $Small_Blind = $2;
                 $Big_Blind = $3;
+                $Small_Blind_Sitz = $Big_Blind_Sitz = -1;
                 my $Datum = $Zeit->strftime("%Y/%m/%d %H:%M:%S ET");
                 $Erstekarte = undef;
                 $Einsatz = $Big_Blind;
