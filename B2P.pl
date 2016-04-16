@@ -388,7 +388,7 @@ while ($_ = <STDIN>) {
                 $Kurz{$Nick} = $Kuerzel;
 
                 push(@Showdown, "$Nick: shows $Kuerzel ($Blatt)\n");
-                push(@Kollekte, "$Nick: collected $Einsammlung from pot\n")
+                push(@Kollekte, "$Nick collected $Einsammlung from pot\n")
                         if $Einsammlung;
 
                 $Aktion{$Nick} = "collected ($Einsammlung) from pot"
